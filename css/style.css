@@ -1,0 +1,411 @@
+/* ==========================================================================
+   1. RESET E CONFIGURAÇÕES GERAIS
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@400..800&family=Gurajada&family=Press+Start+2P&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    /* Visual retrô/skate style */
+}
+
+body {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../img/background-skatepark.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 32px;
+
+}
+
+/* Classe global para ocultar as telas */
+.escondido {
+    display: none !important;
+}
+
+/* splash screen */
+#splashscreen {
+    background-color: #050505;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    max-width: 450px;
+}
+
+#splashscreen .tags {
+    justify-content: center;
+}
+
+#splashscreen p {
+    font-family: 'press Start 2P';
+    font-size: 0.8rem;
+    color: #ccc;
+    text-transform: none;
+    letter-spacing: normal;
+    line-height: 1.4;
+}
+
+/* Container padrão para todas as seções/telas */
+section {
+    background-color: #050505;
+    border: 2px solid #FF3FD1;
+    padding: 30px;
+    width: 100%;
+    max-width: 450px;
+
+    box-shadow: 4px 4px 0px #FF3FD1, 0 0 12px #FF3FD1;
+}
+
+/* Formatação de texto */
+
+h1,
+h2,
+h3,
+label,
+button,
+legend,
+span,
+.tag {
+    font-family: 'Press Start 2P';
+}
+
+/* Estilo Especial para o Título SKATOGOSHI */
+h1 {
+    font-size: 1.8rem;
+    color: #fff;
+    text-shadow:
+        2px 2px 0px #FF3FD1,
+        0 0 8px #FF3FD1,
+        0 0 20px rgba(255, 63, 209, 0.6);
+    letter-spacing: 2px;
+    animation: neonPulse 1s infinite alternate;
+}
+
+h2 {
+    font-size: 1.4rem;
+    color: #FDDD56;
+    text-shadow:
+        2px 2px 0px #FF3FD1;
+    letter-spacing: 2px;
+
+
+    /* 3. Garante o alinhamento do texto na ponta esquerda interna */
+    text-align: left;
+    padding-left: 2px;
+    padding-top: 2px;
+}
+
+h3 {
+    font-size: 0.7rem;
+    font-weight: 100;
+    color: #39D0EB;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+label,
+legend,
+span {
+    font-size: 0.6rem;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Animação para dar o efeito de luz neon piscando de leve */
+@keyframes neonPulse {
+    from {
+        text-shadow: 2px 2px 0px #FF3FD1, 0 0 8px #FF3FD1, 0 0 20px rgba(255, 63, 209, 0.6);
+    }
+
+    to {
+        text-shadow: 2px 2px 0px #FF3FD1, 0 0 4px #FF3FD1, 0 0 12px rgba(255, 63, 209, 0.4);
+    }
+}
+
+
+/* ==========================================================================
+   2. COMPONENTES INTERATIVOS (BOTÕES E INPUTS)
+   ========================================================================== */
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    background-color: #1a1a1a;
+    border: 2px solid #444;
+    color: #fff;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:hover {
+    border-color: #FF3FD1;
+    outline: none;
+}
+
+input[type="text"]:focus {
+    border-color: #FF3FD1;
+    box-shadow: 0 0 12px #555;
+}
+
+button {
+    background-color: #FF3FD1;
+    color: #000;
+    border: none;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    width: 100%;
+
+}
+
+button:hover {
+    background-color: #fff;
+    color: #1a1a1a;
+    border-color: #fff;
+}
+
+button:disabled,
+button:disabled:hover {
+    background-color: #555;
+    color: #bbb;
+    cursor: not-allowed;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* ==========================================================================
+   componentes de espaço
+   ========================================================================== */
+.gap8px {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+
+
+/* ==========================================================================
+   3. TELA DE MENU (SELEÇÃO DE PERSONAGEM)
+   ========================================================================== */
+.tags {
+    display: flex;
+}
+
+.tag {
+    background: #FF3FD1;
+    padding: 8px;
+    color: #000;
+    font-size: 0.6rem;
+    margin-right: 8px;
+}
+
+
+
+hr {
+    height: 2px;
+    background-color: #FF3FD1;
+    margin: 16px 0;
+    border: none;
+}
+
+fieldset {
+    display: flex;
+    flex-direction: column;
+    border: none;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+input[type="radio"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    pointer-events: none;
+}
+
+fieldset label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px;
+    color: #fff;
+    background-color: #1a1a1a;
+    border: 2px solid #444;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.personagem-foto {
+    flex: 0 0 64px;
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+
+}
+
+.personagem-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.personagem-info small {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.8rem;
+    color: #ccc;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+fieldset label:hover {
+    border-color: #FF3FD1;
+    background-color: #272027;
+}
+
+input[type="radio"]:checked+label {
+    background-color: #ffffff;
+    border: none;
+    box-shadow: 4px 4px 0px #FF3FD1;
+}
+
+input[type="radio"]:checked+label small {
+    color: #000;
+}
+
+input[type="radio"]:checked+label span {
+    color: #000;
+}
+
+input[type="radio"]:focus-visible+label {
+    outline: 3px solid #FDDD56;
+    outline-offset: 3px;
+}
+
+
+
+/* ==========================================================================
+   4. TELA DE JOGO (PAINEL E BARRAS)
+   ========================================================================== */
+#exibir-personagem {
+    color: #aaa;
+    font-size: 1rem;
+    margin-bottom: 25px;
+}
+
+.status-item {
+    background-color: #1e1e1e;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.status-label {
+    font-size: 0.85rem;
+    min-width: 110px;
+    text-align: left;
+}
+
+.status-porcentagem {
+    font-size: 0.85rem;
+    min-width: 65px;
+    text-align: right;
+    color: #00e676;
+}
+
+/* Estilização nativa das barras de progresso */
+progress {
+    flex-grow: 1;
+    height: 14px;
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    background-color: #333;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+/* Cores das barras (Webkit - Chrome/Safari/Edge) */
+#barra-felicidade::-webkit-progress-value {
+    background-color: #4caf50;
+}
+
+#barra-energia::-webkit-progress-value {
+    background-color: #ff9800;
+}
+
+#barra-pov::-webkit-progress-value {
+    background-color: #2196f3;
+}
+
+/* Cores das barras (Firefox) */
+#barra-felicidade::-moz-progress-bar {
+    background-color: #4caf50;
+}
+
+#barra-energia::-moz-progress-bar {
+    background-color: #ff9800;
+}
+
+#barra-pov::-moz-progress-bar {
+    background-color: #2196f3;
+}
+
+/* Grid de botões de ação */
+.acoes-jogo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.acoes-jogo button {
+    padding: 15px 10px;
+}
+
+#btn-arroto {
+    grid-column: span 2;
+    /* Ocupa as duas colunas */
+}
+
+#btn-reset {
+    margin-top: 25px;
+    background-color: transparent;
+    border-color: #ff5252;
+    color: #ff5252;
+    font-size: 0.8rem;
+    padding: 8px 15px;
+}
+
+#btn-reset:hover {
+    background-color: #ff5252;
+    color: #fff;
+}

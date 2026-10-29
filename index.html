@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKATOGOSHI</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Tela 1: Splashscreen -->
+    <div id="splashscreen">
+        <div class="tags">
+            <span class="tag">Mobile & WEB</span>
+            <span class="tag">Esgoto Ed.</span>
+            <span class="tag">1.0</span>
+        </div>
+        <h1>SKATOGOSHI</h1>
+        <p>Bem-vindo ao submundo. Skatogoshi é um manifesto irônico sobre a cultura de rua e o absurdo da existência.
+            Entre becos cyberpunks e a fumaça dos esgotos, as personagens tentam sobreviver ao apocalipse do jeito que
+            dá. Pegue seu rolamento, ignore as regras e boa viagem.</p>
+    </div>
+
+    <!-- Tela 2: Menu (formulario) -->
+    <section id="menu" class="escondido">
+        <div class="gap8px">
+            <div class="tags">
+                <span class="tag">Mobile & WEB</span>
+                <span class="tag">Esgoto Ed.</span>
+                <span class="tag">1.0</span>
+            </div>
+            <h2>SKATOGOSHI</h2>
+            <h3>Tamagotchi de patins no esgoto</h3>
+        </div>
+
+        <hr>
+
+        <form id="formulario-menu" action="">
+            <div class="gap8px">
+                <label for="nome-skatista">Nickname da lenda</label>
+                <input type="text" id="nome-skatista" placeholder="Escreva seu nick aqui" required>
+            </div>
+            <fieldset id="grupo-personagens">
+                <div class="gap8px">
+                    <legend>Escolha seu parceiro de esgoto</legend>
+                    <input id="ratinha" type="radio" name="personagem" class="btn-personagem" data-persona="Ratinha"
+                        required>
+                    <label for="ratinha">
+                        <img class="personagem-foto" src="img/profile-picture.jpg" alt="">
+                        <span class="personagem-info">
+                            <span>Ratinha</span>
+                            <small>Ágil e cheia de atitude.</small>
+                        </span>
+                    </label>
+                    <input id="gregor" type="radio" name="personagem" class="btn-personagem" data-persona="Gregor">
+                    <label for="gregor">
+                        <img class="personagem-foto" src="img/profile-picture.jpg" alt="">
+                        <span class="personagem-info">
+                            <span>Gregor Samsa</span>
+                            <small>Fortemente construído e com muita energia.</small>
+                        </span>
+                    </label>
+                    <input id="pomba-rola" type="radio" name="personagem" class="btn-personagem" data-persona="Pomba Rola">
+                    <label for="pomba-rola">
+                        <img class="personagem-foto" src="img/profile-picture.jpg" alt="">
+                        <span class="personagem-info">
+                            <span>Pomba rola</span>
+                            <small>Veloz e ágil, com um estilo único.</small>
+                        </span>
+                    </label>
+                </div>
+            </fieldset>
+            <button type="submit" id="btn-iniciar" disabled>Começar Rolê</button>
+        </form>
+    </section>
+
+    <!-- Tela 3: Carregando (Transição) -->
+    <section id="carregando" class="escondido">
+        <p>Preparando a pista...</p>
+    </section>
+
+    <!-- Tela 4: Jogo -->
+    <section id="jogo" class="escondido">
+        <span id="exibir-nome"></span>
+        <h4 id="exibir-personagem"></h4>
+
+        <!-- Novo Painel de Status com Barras de Progresso -->
+        <div id="status-display">
+            <div class="status-item">
+                <span class="status-label">😊 Felicidade:</span>
+                <progress id="barra-felicidade" value="100" max="100"></progress>
+                <span id="texto-felicidade" class="status-porcentagem">100%</span>
+            </div>
+
+            <div class="status-item">
+                <span class="status-label">⚡ Energia:</span>
+                <progress id="barra-energia" value="100" max="100"></progress>
+                <span id="texto-energia" class="status-porcentagem">100%</span>
+            </div>
+
+            <div class="status-item">
+                <span class="status-label">🛹 POV (Rolê):</span>
+                <progress id="barra-pov" value="100" max="100"></progress>
+                <span id="texto-pov" class="status-porcentagem">100%</span>
+            </div>
+        </div>
+        <br>
+        <button id="btn-manobra">Mandar Manobra</button>
+        <button id="btn-redbull">Tomar Redbull</button>
+        <button id="btn-arroto">Arrotar Altão</button>
+        <br><br>
+        <button id="btn-reset" style="background: #ff4d4d; color: white;">Resetar Save</button>
+    </section>
+
+
+    <!-- Script no final do body para evitar erros de carregamento do DOM -->
+    <script src="js/script.js"></script>
+</body>
+
+</html>
