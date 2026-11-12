@@ -1,18 +1,37 @@
-// Jogador
+// Estado persistido do jogador e status atuais do rolê.
 let tamagotchi = {
     nome: "",
     personagem: null,
-    felicidade: 100,
+    vibe: 100,
     energia: 100,
-    pov: 100,
+    crew: 100,
     vivo: true,
     ultimoAcesso: null
 };
 
-// Variável para armazenar a seleção temporária do menu
+// Seleção temporária até o formulário iniciar um novo jogo.
 let personagemSelecionado = "";
 
-// Mapa de telas
+// Sprites usados nos cartões do menu e na pista.
+const spritesPersonagens = {
+    "Ratinha":
+        "./img/craftpix-net-563568-free-wraith-tiny-style-2d-sprites/PNG/Wraith_03/PNG%20Sequences/Idle/Wraith_03_Idle_000.png",
+    "Gregor":
+        "./img/craftpix-net-563568-free-wraith-tiny-style-2d-sprites/PNG/Wraith_01/PNG%20Sequences/Idle/Wraith_01_Idle_000.png",
+    "Pomba Rola":
+        "./img/craftpix-net-563568-free-wraith-tiny-style-2d-sprites/PNG/Wraith_02/PNG%20Sequences/Idle/Wraith_02_Idle_000.png"
+};
+
+// Balanceamento: prazos de desgaste e efeitos de cada ação.
+const regrasDoJogo = {
+    segundosParaZerarVibe: 3 * 24 * 60 * 60,
+    segundosParaZerarCrew: 7 * 24 * 60 * 60,
+    manobra: { vibe: 20, energia: 10 },
+    descanso: { energia: 30 },
+    ensino: { crew: 20, energia: 15 },
+    statusMaximo: 100
+};
+
 const telas = {
     splash: document.getElementById('splashscreen'),
     menu: document.getElementById('menu'),
@@ -20,111 +39,154 @@ const telas = {
     jogo: document.getElementById('jogo')
 };
 
-// Inicia apos ler todo docuemnto (importante pois tava quebrando a leitura por conta do momento que declarei algumas funcoes onde ainda nao existiam os elementos no DOM, provavelmente posso resolver isso com o defer no script, mas por hora deixei assim)
+// Inicialização da interface e associação dos controles às ações.
 window.addEventListener('DOMContentLoaded', () => {
 
-    // Verifica se já existe um jogo salvo no navegador
+    // Restaura um save válido; sem save, abre o menu para começar.
     function verificarSave() {
-        const save = localStorage.getItem('skatogoshi_save');
+        const save = carregarJogoSalvo();
 
-        if (save) {
-            tamagotchi = JSON.parse(save);
-
-            if (tamagotchi.vivo) {
-                calcularTempoOffline();
-                irParaTela('jogo');
-                iniciarLoopTempo();
-            } else {
-                irParaTela('menu');
-            }
-        } else {
+        if (!save) {
             irParaTela('menu');
+            return;
         }
 
+        tamagotchi = save;
+        if (!tamagotchi.vivo) {
+            localStorage.removeItem('skatogoshi_save');
+            irParaTela('menu');
+            return;
+        }
+
+        if (!calcularTempoOffline()) return;
+
+        irParaTela('jogo');
+        iniciarLoopTempo();
     }
 
-    // Mostra a Splash Screen por 3 segundos
     setTimeout(() => {
         telas.splash.classList.add('escondido');
         verificarSave();
     }, 3000);
 
-    // MENU seleção dos personagens
     const radiosPersonagem = document.querySelectorAll('.btn-personagem');
     const inputNome = document.getElementById('nome-skatista');
     const botaoIniciar = document.getElementById('btn-iniciar');
     const formularioMenu = document.getElementById('formulario-menu');
 
-
+    // Só permite iniciar quando nickname e personagem estiverem definidos.
     function atualizarEstadoBotao() {
         const nomeFoiPreenchido = inputNome.value.trim() !== '';
         const personagemFoiSelecionado = document.querySelector('input[name="personagem"]:checked') !== null;
 
-        if (nomeFoiPreenchido && personagemFoiSelecionado) {
-            botaoIniciar.disabled = false;
-        } else {
-            botaoIniciar.disabled = true;
-        }
+        botaoIniciar.disabled = !(nomeFoiPreenchido && personagemFoiSelecionado);
     }
 
     inputNome.addEventListener('input', atualizarEstadoBotao);
 
-    // Aparencia visual de seleção do personagem (CLASSE SELECIONADO)
+    // Guarda a opção escolhida e atualiza a disponibilidade do botão de início.
     function aoMudarPersonagem(evento) {
-        const radioSelecionado = evento.target;
-
-        // Esse laco remove a classe 'selecionado' de todos os radios, garantindo que apenas o selecionado tenha a classe
-        for (let indice = 0; indice < radiosPersonagem.length; indice++) {
-            const radioPersonagem = radiosPersonagem[indice];
-            radioPersonagem.classList.remove('selecionado');
-        }
-
-        // Adiciona a classe 'selecionado' ao radio que foi clicado 
-        //E PEGA O ATRIBUTO DATA-PERSONA PARA SALVAR O PERSONAGEM SELECIONADO
-        radioSelecionado.classList.add('selecionado');
+        const radioSelecionado = evento.currentTarget;
         personagemSelecionado = radioSelecionado.getAttribute('data-persona');
         atualizarEstadoBotao();
     }
 
-    // esse laco adiciona o evento de mudança a cada radio, chamando a função 'aoMudarPersonagem quando um radio e selecionado
-    //entao cada vez que um radio for selecionado, a função 'aoMudarPersonagem' será chamada, atualizando a interface e o estado do botão de iniciar
-    for (let indice = 0; indice < radiosPersonagem.length; indice++) {
-        const radioPersonagem = radiosPersonagem[indice];
-        radioPersonagem.addEventListener('change', aoMudarPersonagem);
-    }
+    radiosPersonagem.forEach(radio => radio.addEventListener('change', aoMudarPersonagem));
     atualizarEstadoBotao();
 
-    // GAMEPLAY botoes de ação
     formularioMenu.addEventListener('submit', iniciarNovoJogo);
     document.getElementById('btn-manobra').addEventListener('click', mandarManobra);
-    document.getElementById('btn-redbull').addEventListener('click', tomarRedbull);
-    document.getElementById('btn-arroto').addEventListener('click', arrotarAltao);
+    document.getElementById('btn-descansar').addEventListener('click', descansar);
+    document.getElementById('btn-ensinar').addEventListener('click', ensinarManobra);
     document.getElementById('btn-reset').addEventListener('click', resetarSave);
 });
 
 
-
-// Navegação simples entre as telas
+// NAVEGAÇÃO ENTRE TELAS
 function irParaTela(telaAlvo) {
     Object.keys(telas).forEach(key => telas[key].classList.add('escondido'));
     telas[telaAlvo].classList.remove('escondido');
     if (telaAlvo === 'jogo') atualizarInterface();
 }
 
-// Inicia o jogo para um novo skatista
-function iniciarNovoJogo(evento) {
+// SAVE: leitura, compatibilidade e validação
+function carregarJogoSalvo() {
+    const textoSave = localStorage.getItem('skatogoshi_save');
+    if (!textoSave) return null;
 
-    // !!IMPORTANTISSIMO!! IMPEDE QUE O FORMULARIO RECARREGUE A PAGINA
+    let save;
+    try {
+        save = JSON.parse(textoSave);
+    } catch (erro) {
+        if (!(erro instanceof SyntaxError)) throw erro;
+        removerSaveInvalido('O save está corrompido e foi removido.');
+        return null;
+    }
+
+    const estado = normalizarSave(save);
+    if (!estado) {
+        removerSaveInvalido('O save é inválido e foi removido.');
+        return null;
+    }
+
+    return estado;
+}
+
+function normalizarSave(save) {
+    if (!save || typeof save !== 'object' || Array.isArray(save)) return null;
+
+    // Mantém a compatibilidade com os nomes antigos dos status salvos.
+    const estado = {
+        nome: save.nome,
+        personagem: save.personagem,
+        vibe: save.vibe ?? save.felicidade,
+        energia: save.energia,
+        crew: save.crew ?? save.pov,
+        vivo: save.vivo,
+        ultimoAcesso: save.ultimoAcesso
+    };
+
+    const statusValidos = ['vibe', 'energia', 'crew'].every(status =>
+        Number.isFinite(estado[status])
+        && estado[status] >= 0
+        && estado[status] <= regrasDoJogo.statusMaximo
+    );
+    const acessoValido = estado.ultimoAcesso === null
+        || (Number.isFinite(estado.ultimoAcesso) && estado.ultimoAcesso > 0);
+
+    if (
+        typeof estado.nome !== 'string'
+        || estado.nome.trim() === ''
+        || !Object.prototype.hasOwnProperty.call(spritesPersonagens, estado.personagem)
+        || !statusValidos
+        || typeof estado.vivo !== 'boolean'
+        || !acessoValido
+    ) {
+        return null;
+    }
+
+    if (estado.ultimoAcesso === null) estado.ultimoAcesso = Date.now();
+    return estado;
+}
+
+function removerSaveInvalido(mensagem) {
+    localStorage.removeItem('skatogoshi_save');
+    alert(`${mensagem} Você pode começar um novo rolê.`);
+}
+
+// CRIAÇÃO DE JOGO
+function iniciarNovoJogo(evento) {
     evento.preventDefault();
 
-    const inputNome = document.getElementById('nome-skatista').value;
-    tamagotchi.nome = inputNome.trim() !== "" ? inputNome : "Gugu";
-    tamagotchi.personagem = personagemSelecionado; // Atribui o skatista escolhido
-    tamagotchi.felicidade = 100;
-    tamagotchi.energia = 100;
-    tamagotchi.pov = 100;
-    tamagotchi.vivo = true;
-    tamagotchi.ultimoAcesso = Date.now();
+    tamagotchi = {
+        nome: document.getElementById('nome-skatista').value.trim(),
+        personagem: personagemSelecionado,
+        vibe: regrasDoJogo.statusMaximo,
+        energia: regrasDoJogo.statusMaximo,
+        crew: regrasDoJogo.statusMaximo,
+        vivo: true,
+        ultimoAcesso: Date.now()
+    };
 
     irParaTela('carregando');
 
@@ -135,7 +197,7 @@ function iniciarNovoJogo(evento) {
     }, 1500);
 }
 
-// Configurações do relógio do jogo
+// TEMPO, DECAIMENTO DOS STATUS E FIM DE JOGO
 let gameLoop;
 
 function iniciarLoopTempo() {
@@ -146,105 +208,126 @@ function iniciarLoopTempo() {
 function simularTempo() {
     if (!tamagotchi.vivo) return;
 
-    tamagotchi.felicidade -= (100 / 7200);   // Zera em 2 horas
-    tamagotchi.energia -= (100 / 14400);    // Zera em 4 horas
-    tamagotchi.pov -= (100 / 3600);         // Zera em 1 hora
-
-    verificarSaude();
+    if (!atualizarStatusPeloTempo()) return;
     salvarJogo();
     atualizarInterface();
 }
 
 function calcularTempoOffline() {
-    if (!tamagotchi.ultimoAcesso) return;
+    const segundosFora = aplicarDesgastePorTempo();
+    if (!verificarSaude()) return;
 
-    const agora = Date.now();
-    const milissegundosFora = agora - tamagotchi.ultimoAcesso;
-    const segundosFora = Math.floor(milissegundosFora / 1000);
-
-    const taxaFelicidadeOffline = (100 / 7200) / 5;
-    const taxaEnergiaOffline = (100 / 14400) / 5;
-    const taxaPovOffline = (100 / 3600) / 5;
-
-    tamagotchi.felicidade -= segundosFora * 0.2 * (100 / 7200);
-    tamagotchi.energia -= segundosFora * taxaEnergiaOffline;
-    tamagotchi.pov -= segundosFora * taxaPovOffline;
-
-    verificarSaude();
-
-    if (segundosFora > 60 && tamagotchi.vivo) {
-        alert(`Você ficou longe da pista por ${Math.floor(segundosFora / 60)} minutos! Os status caíram bem mais devagar.`);
+    salvarJogo();
+    if (segundosFora >= 60 * 60) {
+        alert(`Você ficou longe da pista por ${Math.floor(segundosFora / 60)} minutos. A Vibe e a Crew sentiram sua falta!`);
     }
+    return true;
+}
+
+// Aplica a perda proporcional ao tempo decorrido desde o último save.
+function aplicarDesgastePorTempo(agora = Date.now()) {
+    const ultimoAcesso = Number(tamagotchi.ultimoAcesso);
+    if (!Number.isFinite(ultimoAcesso) || ultimoAcesso <= 0) {
+        tamagotchi.ultimoAcesso = agora;
+        return 0;
+    }
+
+    const segundosPassados = Math.max(0, agora - ultimoAcesso) / 1000;
+    tamagotchi.vibe -= segundosPassados * (regrasDoJogo.statusMaximo / regrasDoJogo.segundosParaZerarVibe);
+    tamagotchi.crew -= segundosPassados * (regrasDoJogo.statusMaximo / regrasDoJogo.segundosParaZerarCrew);
+    tamagotchi.ultimoAcesso = agora;
+
+    return segundosPassados;
+}
+
+function atualizarStatusPeloTempo(agora = Date.now()) {
+    aplicarDesgastePorTempo(agora);
+    return verificarSaude();
 }
 
 function verificarSaude() {
-    tamagotchi.felicidade = Math.max(0, tamagotchi.felicidade);
-    tamagotchi.energia = Math.max(0, tamagotchi.energia);
-    tamagotchi.pov = Math.max(0, tamagotchi.pov);
+    tamagotchi.vibe = Math.max(0, Math.min(regrasDoJogo.statusMaximo, tamagotchi.vibe));
+    tamagotchi.energia = Math.max(0, Math.min(regrasDoJogo.statusMaximo, tamagotchi.energia));
+    tamagotchi.crew = Math.max(0, Math.min(regrasDoJogo.statusMaximo, tamagotchi.crew));
 
-    if (tamagotchi.felicidade <= 0 || tamagotchi.energia <= 0 || tamagotchi.pov <= 0) {
+    if (tamagotchi.vibe <= 0 || tamagotchi.crew <= 0) {
         tamagotchi.vivo = false;
         clearInterval(gameLoop);
-        alert(`${tamagotchi.nome} (${tamagotchi.personagem}) cansou do rolê e foi embora!`);
+        const motivoGameOver = tamagotchi.vibe <= 0
+            ? 'A Vibe acabou'
+            : 'A Crew se desfez';
+        alert(`${motivoGameOver}! ${tamagotchi.personagem} largou o skate. Game over!`);
         resetarSave();
+        return false;
     }
+
+    return true;
 }
 
+// Persiste o estado atual para continuar o rolê na próxima visita.
 function salvarJogo() {
-    tamagotchi.ultimoAcesso = Date.now();
     localStorage.setItem('skatogoshi_save', JSON.stringify(tamagotchi));
 }
 
+// INTERFACE: sincroniza nomes, sprite, barras e disponibilidade das ações.
 function atualizarInterface() {
-    let emoji = "🐭";
-    if (tamagotchi.personagem === "Gregor") emoji = "🪳";
-    if (tamagotchi.personagem === "Pomba Rola") emoji = "🐦";
+    const spritePersonagem = spritesPersonagens[tamagotchi.personagem];
+    const imagemPersonagem = document.getElementById('personagem-no-cenario');
 
-    // Atualiza os cabeçalhos de texto
-    document.getElementById('exibir-nome').innerText = `Skatista: ${tamagotchi.nome}`;
-    document.getElementById('exibir-personagem').innerText = `Skatista Selecionado: ${emoji} ${tamagotchi.personagem}`;
+    document.getElementById('exibir-nome').innerText = tamagotchi.nome;
+    document.getElementById('exibir-personagem').innerText = tamagotchi.personagem;
+    imagemPersonagem.src = spritePersonagem;
+    imagemPersonagem.alt = `${tamagotchi.personagem} na pista`;
+    document.getElementById('cenario-jogo').setAttribute(
+        'aria-label',
+        `Cenário: pista de skate no esgoto. ${tamagotchi.nome} e ${tamagotchi.personagem} estão curtindo um rolê de skate e patins.`
+    );
 
-    // Atualiza o valor visual das barras de progresso (aceita números quebrados)
-    document.getElementById('barra-felicidade').value = tamagotchi.felicidade;
+    document.getElementById('barra-vibe').value = tamagotchi.vibe;
     document.getElementById('barra-energia').value = tamagotchi.energia;
-    document.getElementById('barra-pov').value = tamagotchi.pov;
+    document.getElementById('barra-crew').value = tamagotchi.crew;
 
-    // Formata o texto com 2 casas decimais e troca o ponto por vírgula (ex: 88.25 vira 88,25)
-    document.getElementById('texto-felicidade').innerText = `${tamagotchi.felicidade.toFixed(2).replace('.', ',')}%`;
-    document.getElementById('texto-energia').innerText = `${tamagotchi.energia.toFixed(2).replace('.', ',')}%`;
-    document.getElementById('texto-pov').innerText = `${tamagotchi.pov.toFixed(2).replace('.', ',')}%`;
+    document.getElementById('texto-vibe').innerText = `${Math.round(tamagotchi.vibe)}%`;
+    document.getElementById('texto-energia').innerText = `${Math.round(tamagotchi.energia)}%`;
+    document.getElementById('texto-crew').innerText = `${Math.round(tamagotchi.crew)}%`;
+
+    document.getElementById('btn-manobra').disabled = tamagotchi.energia < regrasDoJogo.manobra.energia;
+    document.getElementById('btn-ensinar').disabled = tamagotchi.energia < regrasDoJogo.ensino.energia;
 }
 
-// Ações do Skatista
+// AÇÕES DO JOGADOR: cada ação altera os status e persiste o resultado.
 function mandarManobra() {
-    if (!tamagotchi.vivo || tamagotchi.energia <= 0) return;
-    tamagotchi.felicidade = Math.min(100, tamagotchi.felicidade + 5);
-    tamagotchi.energia = Math.max(0, tamagotchi.energia - 1);
+    if (!tamagotchi.vivo || tamagotchi.energia < regrasDoJogo.manobra.energia
+        || !atualizarStatusPeloTempo()) return;
+    tamagotchi.vibe = Math.min(regrasDoJogo.statusMaximo, tamagotchi.vibe + regrasDoJogo.manobra.vibe);
+    tamagotchi.energia -= regrasDoJogo.manobra.energia;
 
-    console.log(`${tamagotchi.nome} mandou um 50-50!`);
+    console.log(`${tamagotchi.nome} mandou uma manobra! A Vibe subiu.`);
     salvarJogo();
     atualizarInterface();
 }
 
-function tomarRedbull() {
-    if (!tamagotchi.vivo) return;
-    tamagotchi.energia = Math.min(100, tamagotchi.energia + 10);
+function descansar() {
+    if (!tamagotchi.vivo || !atualizarStatusPeloTempo()) return;
+    tamagotchi.energia = Math.min(regrasDoJogo.statusMaximo, tamagotchi.energia + regrasDoJogo.descanso.energia);
 
-    console.log(`${tamagotchi.nome} tomou um Redbull!`);
+    console.log(`${tamagotchi.nome} descansou e recuperou Energia.`);
     salvarJogo();
     atualizarInterface();
 }
 
-function arrotarAltao() {
-    if (!tamagotchi.vivo) return;
-    tamagotchi.felicidade = Math.min(100, tamagotchi.felicidade + 1);
-    tamagotchi.energia = Math.min(100, tamagotchi.energia + 1);
+function ensinarManobra() {
+    if (!tamagotchi.vivo || tamagotchi.energia < regrasDoJogo.ensino.energia
+        || !atualizarStatusPeloTempo()) return;
+    tamagotchi.crew = Math.min(regrasDoJogo.statusMaximo, tamagotchi.crew + regrasDoJogo.ensino.crew);
+    tamagotchi.energia -= regrasDoJogo.ensino.energia;
 
-    console.log(`${tamagotchi.nome} BURRP!`);
+    console.log(`${tamagotchi.nome} ensinou uma manobra e fortaleceu a Crew.`);
     salvarJogo();
     atualizarInterface();
 }
 
+// Apaga o estado salvo e retorna à seleção de personagem.
 function resetarSave() {
     localStorage.removeItem('skatogoshi_save');
     clearInterval(gameLoop);

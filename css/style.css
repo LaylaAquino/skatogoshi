@@ -1,16 +1,14 @@
 /* ==========================================================================
-   1. RESET E CONFIGURAÇÕES GERAIS
+   1. BASE VISUAL E LAYOUT GLOBAL
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@400..800&family=Gurajada&family=Press+Start+2P&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
-    /* Visual retrô/skate style */
 }
 
 body {
@@ -27,12 +25,12 @@ body {
 
 }
 
-/* Classe global para ocultar as telas */
+/* Estado comum às telas que não estão ativas. */
 .escondido {
     display: none !important;
 }
 
-/* splash screen */
+/* Abertura e apresentação do jogo. */
 #splashscreen {
     background-color: #050505;
     padding: 30px;
@@ -56,7 +54,7 @@ body {
     line-height: 1.4;
 }
 
-/* Container padrão para todas as seções/telas */
+/* Moldura compartilhada pelo menu, transição e tela do jogo. */
 section {
     background-color: #050505;
     border: 2px solid #FF3FD1;
@@ -67,7 +65,7 @@ section {
     box-shadow: 4px 4px 0px #FF3FD1, 0 0 12px #FF3FD1;
 }
 
-/* Formatação de texto */
+/* Tipografia pixelada para títulos e controles da interface. */
 
 h1,
 h2,
@@ -75,12 +73,10 @@ h3,
 label,
 button,
 legend,
-span,
 .tag {
     font-family: 'Press Start 2P';
 }
 
-/* Estilo Especial para o Título SKATOGOSHI */
 h1 {
     font-size: 1.8rem;
     color: #fff;
@@ -100,7 +96,6 @@ h2 {
     letter-spacing: 2px;
 
 
-    /* 3. Garante o alinhamento do texto na ponta esquerda interna */
     text-align: left;
     padding-left: 2px;
     padding-top: 2px;
@@ -115,15 +110,14 @@ h3 {
 }
 
 label,
-legend,
-span {
+legend {
     font-size: 0.6rem;
     color: #ffffff;
     letter-spacing: 1px;
     text-transform: uppercase;
 }
 
-/* Animação para dar o efeito de luz neon piscando de leve */
+/* Pulso neon usado no título principal. */
 @keyframes neonPulse {
     from {
         text-shadow: 2px 2px 0px #FF3FD1, 0 0 8px #FF3FD1, 0 0 20px rgba(255, 63, 209, 0.6);
@@ -136,7 +130,7 @@ span {
 
 
 /* ==========================================================================
-   2. COMPONENTES INTERATIVOS (BOTÕES E INPUTS)
+   2. CAMPOS E CONTROLES COMPARTILHADOS
    ========================================================================== */
 input[type="text"] {
     width: 100%;
@@ -174,6 +168,7 @@ button {
 
 }
 
+/* Estados comuns dos botões: hover, desabilitado e pressionado. */
 button:hover {
     background-color: #fff;
     color: #1a1a1a;
@@ -191,9 +186,7 @@ button:active {
     transform: scale(0.98);
 }
 
-/* ==========================================================================
-   componentes de espaço
-   ========================================================================== */
+/* Utilitário de layout para empilhar conteúdo com espaçamento uniforme. */
 .gap8px {
     display: flex;
     flex-direction: column;
@@ -203,7 +196,7 @@ button:active {
 
 
 /* ==========================================================================
-   3. TELA DE MENU (SELEÇÃO DE PERSONAGEM)
+   3. MENU E SELEÇÃO DE PERSONAGEM
    ========================================================================== */
 .tags {
     display: flex;
@@ -234,6 +227,7 @@ fieldset {
     margin-bottom: 25px;
 }
 
+/* Radios visualmente ocultos continuam acessíveis por teclado e leitor de tela. */
 input[type="radio"] {
     position: absolute;
     width: 1px;
@@ -250,7 +244,7 @@ input[type="radio"] {
 fieldset label {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 12px;
     padding: 12px;
     color: #fff;
     background-color: #1a1a1a;
@@ -259,12 +253,28 @@ fieldset label {
     transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
+/* Retrato do personagem e cor de fundo que destaca cada sprite transparente. */
 .personagem-foto {
     flex: 0 0 64px;
     width: 64px;
     height: 64px;
-    object-fit: cover;
+    padding: 5px;
+    object-fit: contain;
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    border-radius: 10px;
+    image-rendering: pixelated;
+}
 
+.personagem-foto--ratinha {
+    background-color: #7650a8;
+}
+
+.personagem-foto--gregor {
+    background-color: #258f76;
+}
+
+.personagem-foto--pomba {
+    background-color: #9a6844;
 }
 
 .personagem-info {
@@ -272,6 +282,18 @@ fieldset label {
     flex-direction: column;
     gap: 6px;
     min-width: 0;
+    color: #fff;
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.personagem-info>span {
+    font-family: inherit;
+    font-size: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
 }
 
 .personagem-info small {
@@ -282,6 +304,7 @@ fieldset label {
     letter-spacing: normal;
 }
 
+/* Realce do cartão ao passar o mouse ou selecionar uma opção. */
 fieldset label:hover {
     border-color: #FF3FD1;
     background-color: #272027;
@@ -309,42 +332,143 @@ input[type="radio"]:focus-visible+label {
 
 
 /* ==========================================================================
-   4. TELA DE JOGO (PAINEL E BARRAS)
+   4. CENÁRIO, DUPLA E STATUS DO JOGO
    ========================================================================== */
+.cenario-jogo {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    aspect-ratio: 4 / 5;
+    margin-bottom: 24px;
+    overflow: hidden;
+    border: 2px solid #39D0EB;
+    background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.55)),
+        url('../img/background-skatepark.jpg') center / cover;
+    box-shadow: 0 0 12px rgba(57, 208, 235, 0.5);
+}
+
+#dupla-na-pista {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 12px;
+    background: rgba(5, 5, 5, 0.88);
+    border: 1px solid rgba(255, 63, 209, 0.8);
+    box-shadow: 0 0 10px rgba(255, 63, 209, 0.25);
+    text-align: center;
+}
+
+.dupla-titulo {
+    color: #FDDD56;
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 0.55rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.dupla-nomes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    max-width: 100%;
+}
+
+#exibir-nome,
 #exibir-personagem {
-    color: #aaa;
-    font-size: 1rem;
-    margin-bottom: 25px;
+    overflow-wrap: anywhere;
+    color: #fff;
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: clamp(0.65rem, 3vw, 0.9rem);
+    letter-spacing: 1px;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.dupla-conector {
+    color: #39D0EB;
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.dupla-descricao {
+    color: #ccc;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+#personagem-no-cenario {
+    position: relative;
+    z-index: 1;
+    width: clamp(120px, 38vw, 180px);
+    height: clamp(150px, 46vw, 220px);
+    object-fit: contain;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 5px 2px rgba(0, 0, 0, 0.7));
+    animation: personagemIdle 1.8s ease-in-out infinite;
+}
+
+#status-display {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    padding: 8px;
+    background: rgba(5, 5, 5, 0.88);
+    border: 1px solid rgba(57, 208, 235, 0.7);
 }
 
 .status-item {
-    background-color: #1e1e1e;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 12px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
+    min-width: 0;
+    flex-direction: column;
+    gap: 5px;
+    padding: 7px 6px;
+    background: rgba(30, 30, 30, 0.95);
+    border-radius: 4px;
 }
 
 .status-label {
-    font-size: 0.85rem;
-    min-width: 110px;
-    text-align: left;
+    overflow: hidden;
+    color: #fff;
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: clamp(0.42rem, 1.8vw, 0.55rem);
+    letter-spacing: 1px;
+    text-align: center;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .status-porcentagem {
-    font-size: 0.85rem;
-    min-width: 65px;
-    text-align: right;
     color: #00e676;
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 0.55rem;
+    letter-spacing: 1px;
+    text-align: center;
+    text-transform: uppercase;
 }
 
-/* Estilização nativa das barras de progresso */
 progress {
-    flex-grow: 1;
-    height: 14px;
+    width: 100%;
+    height: 7px;
     appearance: none;
     -webkit-appearance: none;
     border: none;
@@ -353,8 +477,14 @@ progress {
     overflow: hidden;
 }
 
-/* Cores das barras (Webkit - Chrome/Safari/Edge) */
-#barra-felicidade::-webkit-progress-value {
+@keyframes personagemIdle {
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* Cores dos indicadores em navegadores Chromium, Safari e Firefox. */
+#barra-vibe::-webkit-progress-value {
     background-color: #4caf50;
 }
 
@@ -362,12 +492,11 @@ progress {
     background-color: #ff9800;
 }
 
-#barra-pov::-webkit-progress-value {
+#barra-crew::-webkit-progress-value {
     background-color: #2196f3;
 }
 
-/* Cores das barras (Firefox) */
-#barra-felicidade::-moz-progress-bar {
+#barra-vibe::-moz-progress-bar {
     background-color: #4caf50;
 }
 
@@ -375,32 +504,25 @@ progress {
     background-color: #ff9800;
 }
 
-#barra-pov::-moz-progress-bar {
+#barra-crew::-moz-progress-bar {
     background-color: #2196f3;
 }
 
-/* Grid de botões de ação */
+/* ==========================================================================
+   5. AÇÕES DO JOGO E RESET DO SAVE
+   ========================================================================== */
 .acoes-jogo {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 10px;
-    margin-top: 20px;
-}
-
-.acoes-jogo button {
-    padding: 15px 10px;
-}
-
-#btn-arroto {
-    grid-column: span 2;
-    /* Ocupa as duas colunas */
+    margin-top: 16px;
 }
 
 #btn-reset {
     margin-top: 25px;
-    background-color: transparent;
-    border-color: #ff5252;
-    color: #ff5252;
+    background-color: #ff4d4d;
+    border: 2px solid #ff4d4d;
+    color: #fff;
     font-size: 0.8rem;
     padding: 8px 15px;
 }

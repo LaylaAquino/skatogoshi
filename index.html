@@ -10,7 +10,7 @@
 
 <body>
 
-    <!-- Tela 1: Splashscreen -->
+    <!-- Abertura: apresenta o universo do jogo antes do menu. -->
     <div id="splashscreen">
         <div class="tags">
             <span class="tag">Mobile & WEB</span>
@@ -23,7 +23,7 @@
             dá. Pegue seu rolamento, ignore as regras e boa viagem.</p>
     </div>
 
-    <!-- Tela 2: Menu (formulario) -->
+    <!-- Menu inicial: coleta o nickname e a escolha do parceiro. -->
     <section id="menu" class="escondido">
         <div class="gap8px">
             <div class="tags">
@@ -37,85 +37,111 @@
 
         <hr>
 
-        <form id="formulario-menu" action="">
+        <form id="formulario-menu">
             <div class="gap8px">
                 <label for="nome-skatista">Nickname da lenda</label>
-                <input type="text" id="nome-skatista" placeholder="Escreva seu nick aqui" required>
+                <input type="text" id="nome-skatista" name="nome" placeholder="Escreva seu nick aqui" required>
             </div>
+
+            <!-- Opções do parceiro; o radio mantém a seleção acessível por teclado. -->
             <fieldset id="grupo-personagens">
-                <div class="gap8px">
-                    <legend>Escolha seu parceiro de esgoto</legend>
-                    <input id="ratinha" type="radio" name="personagem" class="btn-personagem" data-persona="Ratinha"
-                        required>
-                    <label for="ratinha">
-                        <img class="personagem-foto" src="./img/profile-picture.jpg" alt="">
-                        <span class="personagem-info">
-                            <span>Ratinha</span>
-                            <small>Ágil e cheia de atitude.</small>
-                        </span>
-                    </label>
-                    <input id="gregor" type="radio" name="personagem" class="btn-personagem" data-persona="Gregor">
-                    <label for="gregor">
-                        <img class="personagem-foto" src="./img/profile-picture.jpg" alt="">
-                        <span class="personagem-info">
-                            <span>Gregor Samsa</span>
-                            <small>Fortemente construído e com muita energia.</small>
-                        </span>
-                    </label>
-                    <input id="pomba-rola" type="radio" name="personagem" class="btn-personagem" data-persona="Pomba Rola">
-                    <label for="pomba-rola">
-                        <img class="personagem-foto" src="./img/profile-picture.jpg" alt="">
-                        <span class="personagem-info">
-                            <span>Pomba rola</span>
-                            <small>Veloz e ágil, com um estilo único.</small>
-                        </span>
-                    </label>
-                </div>
+                <legend>Escolha seu parceiro de esgoto</legend>
+                <input id="ratinha" type="radio" name="personagem" class="btn-personagem" data-persona="Ratinha"
+                    required>
+                <label for="ratinha">
+                    <img class="personagem-foto personagem-foto--ratinha"
+                        src="./img/craftpix-net-563568-free-wraith-tiny-style-2d-sprites/PNG/Wraith_03/PNG%20Sequences/Idle/Wraith_03_Idle_000.png"
+                        alt="">
+                    <span class="personagem-info">
+                        <span>Ratinha</span>
+                        <small>Ágil e cheia de atitude.</small>
+                    </span>
+                </label>
+                <input id="gregor" type="radio" name="personagem" class="btn-personagem" data-persona="Gregor">
+                <label for="gregor">
+                    <img class="personagem-foto personagem-foto--gregor"
+                        src="./img/craftpix-net-563568-free-wraith-tiny-style-2d-sprites/PNG/Wraith_01/PNG%20Sequences/Idle/Wraith_01_Idle_000.png"
+                        alt="">
+                    <span class="personagem-info">
+                        <span>Gregor Samsa</span>
+                        <small>Fortemente construído e com muita energia.</small>
+                    </span>
+                </label>
+                <input id="pomba-rola" type="radio" name="personagem" class="btn-personagem" data-persona="Pomba Rola">
+                <label for="pomba-rola">
+                    <img class="personagem-foto personagem-foto--pomba"
+                        src="./img/craftpix-net-563568-free-wraith-tiny-style-2d-sprites/PNG/Wraith_02/PNG%20Sequences/Idle/Wraith_02_Idle_000.png"
+                        alt="">
+                    <span class="personagem-info">
+                        <span>Pomba rola</span>
+                        <small>Veloz e ágil, com um estilo único.</small>
+                    </span>
+                </label>
             </fieldset>
             <button type="submit" id="btn-iniciar" disabled>Começar Rolê</button>
         </form>
     </section>
 
-    <!-- Tela 3: Carregando (Transição) -->
+    <!-- Transição curta entre a criação do jogador e o início do rolê. -->
     <section id="carregando" class="escondido">
         <p>Preparando a pista...</p>
     </section>
 
-    <!-- Tela 4: Jogo -->
+    <!-- Tela principal: dupla, cenário, status e ações do rolê. -->
     <section id="jogo" class="escondido">
-        <span id="exibir-nome"></span>
-        <h4 id="exibir-personagem"></h4>
-
-        <!-- Novo Painel de Status com Barras de Progresso -->
-        <div id="status-display">
-            <div class="status-item">
-                <span class="status-label">😊 Felicidade:</span>
-                <progress id="barra-felicidade" value="100" max="100"></progress>
-                <span id="texto-felicidade" class="status-porcentagem">100%</span>
+        <!-- Identificação da dupla e personagem na pista. -->
+        <div id="cenario-jogo" class="cenario-jogo" role="group" aria-label="Cenário da pista de skate">
+            <div id="dupla-na-pista">
+                <span class="dupla-titulo">Dupla na pista</span>
+                <div class="dupla-nomes">
+                    <span id="exibir-nome"></span>
+                    <span class="dupla-conector" aria-hidden="true">+</span>
+                    <span id="exibir-personagem"></span>
+                </div>
+                <span class="dupla-descricao">Rolê de skate e patins</span>
             </div>
 
-            <div class="status-item">
-                <span class="status-label">⚡ Energia:</span>
-                <progress id="barra-energia" value="100" max="100"></progress>
-                <span id="texto-energia" class="status-porcentagem">100%</span>
-            </div>
+            <img id="personagem-no-cenario"
+                src="./img/craftpix-net-563568-free-wraith-tiny-style-2d-sprites/PNG/Wraith_03/PNG%20Sequences/Idle/Wraith_03_Idle_000.png"
+                alt="Personagem na pista">
 
-            <div class="status-item">
-                <span class="status-label">🛹 POV (Rolê):</span>
-                <progress id="barra-pov" value="100" max="100"></progress>
-                <span id="texto-pov" class="status-porcentagem">100%</span>
+            <!-- Indicadores compactos do progresso do rolê. -->
+            <div id="status-display" role="group" aria-label="Status do jogador">
+                <div class="status-item">
+                    <span class="status-label" title="Sem andar de skate, diminui até zerar. Manobras recuperam.">✨
+                        Vibe</span>
+                    <progress id="barra-vibe" value="100" max="100" aria-label="Vibe"></progress>
+                    <span id="texto-vibe" class="status-porcentagem">100%</span>
+                </div>
+
+                <div class="status-item">
+                    <span class="status-label">⚡ Energia</span>
+                    <progress id="barra-energia" value="100" max="100" aria-label="Energia"></progress>
+                    <span id="texto-energia" class="status-porcentagem">100%</span>
+                </div>
+
+                <div class="status-item">
+                    <span class="status-label" title="Sem compartilhar o skate, diminui até zerar. Ensinar recupera.">🛹
+                        Crew</span>
+                    <progress id="barra-crew" value="100" max="100" aria-label="Crew"></progress>
+                    <span id="texto-crew" class="status-porcentagem">100%</span>
+                </div>
             </div>
         </div>
-        <br>
-        <button id="btn-manobra">Mandar Manobra</button>
-        <button id="btn-redbull">Tomar Redbull</button>
-        <button id="btn-arroto">Arrotar Altão</button>
-        <br><br>
-        <button id="btn-reset" style="background: #ff4d4d; color: white;">Resetar Save</button>
+
+        <!-- Ações que alteram Vibe, Energia e Crew. -->
+        <div class="acoes-jogo" role="group" aria-label="Ações do jogador">
+            <button id="btn-manobra" title="Aumenta a Vibe em 20% e consome 10% de Energia">Mandar Manobra</button>
+            <button id="btn-descansar" title="Recupera 30% de Energia">Descansar</button>
+            <button id="btn-ensinar" title="Aumenta a Crew em 20% e consome 15% de Energia">Ensinar Manobra</button>
+        </div>
+
+        <!-- Apaga o save atual e volta para a seleção de personagem. -->
+        <button id="btn-reset">Resetar Save</button>
     </section>
 
 
-    <!-- Script no final do body para evitar erros de carregamento do DOM -->
+    <!-- O script vem depois das telas para que os elementos já estejam no documento. -->
     <script src="./js/script.js"></script>
 </body>
 
