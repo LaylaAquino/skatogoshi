@@ -350,6 +350,12 @@ input[type="radio"]:focus-visible+label {
     box-shadow: 0 0 12px rgba(57, 208, 235, 0.5);
 }
 
+@media (max-width: 450px) {
+    .cenario-jogo {
+        width: 100%;
+    }
+}
+
 #dupla-na-pista {
     position: absolute;
     top: 10px;
