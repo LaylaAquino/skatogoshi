@@ -44,39 +44,42 @@
             </div>
 
             <!-- Opções do parceiro; o radio mantém a seleção acessível por teclado. -->
-            <fieldset class="gap8px" id="grupo-personagens">
+            <fieldset id="grupo-personagens">
                 <legend>Escolha seu parceiro de esgoto</legend>
-                <input id="ratinha" type="radio" name="personagem" class="btn-personagem" data-persona="Ratinha"
-                    required>
-                <label for="ratinha">
-                    <img class="personagem-foto personagem-foto--ratinha"
-                        src="./img/craftpix-net-563568-free-wraith-tiny-style-2d-sprites/PNG/Wraith_03/PNG%20Sequences/Idle/Wraith_03_Idle_000.png"
-                        alt="">
-                    <span class="personagem-info">
-                        <span>Ratinha</span>
-                        <small>Ágil e cheia de atitude.</small>
-                    </span>
-                </label>
-                <input id="gregor" type="radio" name="personagem" class="btn-personagem" data-persona="Gregor">
-                <label for="gregor">
-                    <img class="personagem-foto personagem-foto--gregor"
-                        src="./img/craftpix-net-563568-free-wraith-tiny-style-2d-sprites/PNG/Wraith_01/PNG%20Sequences/Idle/Wraith_01_Idle_000.png"
-                        alt="">
-                    <span class="personagem-info">
-                        <span>Gregor Samsa</span>
-                        <small>Fortemente construído e com muita energia.</small>
-                    </span>
-                </label>
-                <input id="pomba-rola" type="radio" name="personagem" class="btn-personagem" data-persona="Pomba Rola">
-                <label for="pomba-rola">
-                    <img class="personagem-foto personagem-foto--pomba"
-                        src="./img/craftpix-net-563568-free-wraith-tiny-style-2d-sprites/PNG/Wraith_02/PNG%20Sequences/Idle/Wraith_02_Idle_000.png"
-                        alt="">
-                    <span class="personagem-info">
-                        <span>Pomba rola</span>
-                        <small>Veloz e ágil, com um estilo único.</small>
-                    </span>
-                </label>
+                <div class="gap8px">
+                    <input id="ratinha" type="radio" name="personagem" class="btn-personagem"
+                        data-persona="Ratinha" required>
+                    <label for="ratinha">
+                        <img class="personagem-foto personagem-foto--ratinha"
+                            src="./img/craftpix-net-563568-free-wraith-tiny-style-2d-sprites/PNG/Wraith_03/PNG%20Sequences/Idle/Wraith_03_Idle_000.png"
+                            alt="">
+                        <span class="personagem-info">
+                            <span>Ratinha</span>
+                            <small>Ágil e cheia de atitude.</small>
+                        </span>
+                    </label>
+                    <input id="gregor" type="radio" name="personagem" class="btn-personagem" data-persona="Gregor">
+                    <label for="gregor">
+                        <img class="personagem-foto personagem-foto--gregor"
+                            src="./img/craftpix-net-563568-free-wraith-tiny-style-2d-sprites/PNG/Wraith_01/PNG%20Sequences/Idle/Wraith_01_Idle_000.png"
+                            alt="">
+                        <span class="personagem-info">
+                            <span>Gregor Samsa</span>
+                            <small>Fortemente construído e com muita energia.</small>
+                        </span>
+                    </label>
+                    <input id="pomba-rola" type="radio" name="personagem" class="btn-personagem"
+                        data-persona="Pomba Rola">
+                    <label for="pomba-rola">
+                        <img class="personagem-foto personagem-foto--pomba"
+                            src="./img/craftpix-net-563568-free-wraith-tiny-style-2d-sprites/PNG/Wraith_02/PNG%20Sequences/Idle/Wraith_02_Idle_000.png"
+                            alt="">
+                        <span class="personagem-info">
+                            <span>Pomba rola</span>
+                            <small>Veloz e ágil, com um estilo único.</small>
+                        </span>
+                    </label>
+                </div>
             </fieldset>
             <button type="submit" id="btn-iniciar" disabled>Começar Rolê</button>
         </form>

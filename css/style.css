@@ -232,6 +232,14 @@ fieldset {
     margin-bottom: 25px;
 }
 
+#grupo-personagens {
+    display: block;
+}
+
+#grupo-personagens > .gap8px {
+    margin-top: 8px;
+}
+
 /* Radios visualmente ocultos continuam acessíveis por teclado e leitor de tela. */
 input[type="radio"] {
     position: absolute;
