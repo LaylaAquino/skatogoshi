@@ -11,6 +11,11 @@
     font-family: 'Roboto', sans-serif;
 }
 
+html {
+    min-height: 100%;
+    background-color: #050505;
+}
+
 body {
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../img/background-skatepark.jpg');
     background-size: cover;
@@ -351,6 +356,18 @@ input[type="radio"]:focus-visible+label {
 }
 
 @media (max-width: 450px) {
+    body {
+        align-items: safe center;
+        padding: 0;
+        min-height: 100vh;
+        min-height: 100dvh;
+        background-attachment: scroll;
+    }
+
+    section {
+        max-width: none;
+    }
+
     .cenario-jogo {
         width: 100%;
     }
@@ -518,10 +535,15 @@ progress {
    5. AÇÕES DO JOGO E RESET DO SAVE
    ========================================================================== */
 .acoes-jogo {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  
+    max-width: 100%;
+    flex-direction: row;
+
     margin-top: 16px;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
 }
 
 #btn-reset {
