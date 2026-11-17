@@ -44,6 +44,12 @@ body {
     gap: 8px;
     text-align: center;
     max-width: 450px;
+    cursor: pointer;
+}
+
+#splashscreen:focus-visible {
+    outline: 3px solid #FDDD56;
+    outline-offset: 4px;
 }
 
 #splashscreen .tags {
@@ -57,6 +63,16 @@ body {
     text-transform: none;
     letter-spacing: normal;
     line-height: 1.4;
+}
+
+#splashscreen #splash-instruction {
+    color: #FDDD56;
+    margin-top: 12px;
+    padding: 12px 8px;
+    border: 2px solid #FF3FD1;
+    background-color: #1a1a1a;
+    font-size: 0.7rem;
+    line-height: 1.5;
 }
 
 /* Moldura compartilhada pelo menu, transição e tela do jogo. */

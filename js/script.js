@@ -64,10 +64,19 @@ window.addEventListener('DOMContentLoaded', () => {
         iniciarLoopTempo();
     }
 
-    setTimeout(() => {
+    function avancarSplash() {
+        if (telas.splash.classList.contains('escondido')) return;
         telas.splash.classList.add('escondido');
         verificarSave();
-    }, 3000);
+    }
+
+    telas.splash.addEventListener('click', avancarSplash);
+    telas.splash.addEventListener('keydown', evento => {
+        if (evento.key === 'Enter' || evento.key === ' ') {
+            evento.preventDefault();
+            avancarSplash();
+        }
+    });
 
     const radiosPersonagem = document.querySelectorAll('.btn-personagem');
     const inputNome = document.getElementById('nome-skatista');

@@ -12,7 +12,8 @@
 <body>
 
     <!-- Abertura: apresenta o universo do jogo antes do menu. -->
-    <div id="splashscreen">
+    <div id="splashscreen" role="button" tabindex="0" aria-label="Avançar para o menu"
+        aria-describedby="splash-instruction">
         <div class="tags">
             <span class="tag">Mobile & WEB</span>
             <span class="tag">Esgoto Ed.</span>
@@ -22,6 +23,7 @@
         <p>Bem-vindo ao submundo. Skatogoshi é um manifesto irônico sobre a cultura de rua e o absurdo da existência.
             Entre becos cyberpunks e a fumaça dos esgotos, as personagens tentam sobreviver ao apocalipse do jeito que
             dá. Pegue seu rolamento, ignore as regras e boa viagem.</p>
+        <p id="splash-instruction">Clique ou toque para avançar</p>
     </div>
 
     <!-- Menu inicial: coleta o nickname e a escolha do parceiro. -->
