@@ -237,6 +237,13 @@ button:active {
     margin-right: 8px;
 }
 
+.tags .tag:last-child {
+    background-color: #050505;
+    border: 2px solid #FF3FD1;
+    color: #FF3FD1;
+    margin-right: 0;
+}
+
 
 
 hr {
