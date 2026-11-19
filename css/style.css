@@ -572,27 +572,41 @@ progress {
    5. AÇÕES DO JOGO E RESET DO SAVE
    ========================================================================== */
 .acoes-jogo {
-  
     max-width: 100%;
-    flex-direction: row;
-
     margin-top: 16px;
-
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 6px;
 }
 
+.acoes-jogo button {
+    min-width: 0;
+    min-height: 64px;
+    padding: 8px 4px;
+    font-size: clamp(0.42rem, 1.8vw, 0.58rem);
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
 #btn-reset {
-    margin-top: 25px;
-    background-color: #ff4d4d;
-    border: 2px solid #ff4d4d;
-    color: #fff;
-    font-size: 0.8rem;
-    padding: 8px 15px;
+    width: auto;
+    margin: 16px auto 0;
+    display: block;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #39D0EB;
+    color: #39D0EB;
+    font-size: 0.55rem;
+    line-height: 1.5;
+    padding: 4px 2px;
+    text-decoration: none;
+    text-shadow: 0 0 6px rgba(57, 208, 235, 0.75);
 }
 
 #btn-reset:hover {
-    background-color: #ff5252;
+    background: transparent;
+    border-color: #fff;
     color: #fff;
+    text-shadow: 0 0 8px #39D0EB;
 }
