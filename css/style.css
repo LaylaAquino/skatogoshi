@@ -41,7 +41,7 @@ body {
     padding: 30px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 24px;
     text-align: center;
     max-width: 450px;
     cursor: pointer;
@@ -50,6 +50,13 @@ body {
 #splashscreen:focus-visible {
     outline: 3px solid #FDDD56;
     outline-offset: 4px;
+}
+
+#splashscreen .splash-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
 }
 
 #splashscreen .tags {
@@ -67,7 +74,6 @@ body {
 
 #splashscreen #splash-instruction {
     color: #FDDD56;
-    margin-top: 12px;
     padding: 12px 8px;
     border: 2px solid #FF3FD1;
     background-color: #1a1a1a;
